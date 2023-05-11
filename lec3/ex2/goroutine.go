@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func counter(s string, n int) {
+func counter2(s string, n int) {
 	for i := 0; i < n; i++ {
 		time.Sleep(time.Second)
 		fmt.Println(s, " : ", i)
@@ -14,10 +14,10 @@ func counter(s string, n int) {
 
 func main() {
 
-	go counter("a", 10)
+	go counter2("a", 10)
 
 	go func() {
-		counter("b", 10)
+		counter2("b", 10)
 	}()
 	go func() {
 		for i := 0; i < 10; i++ {
@@ -26,5 +26,5 @@ func main() {
 		}
 	}()
 
-	counter("d", 10)
+	counter2("d", 10)
 }

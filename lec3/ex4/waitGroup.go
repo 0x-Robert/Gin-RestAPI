@@ -6,12 +6,12 @@ import (
 	"time"
 )
 
-func counter(n int) int {
+func counter3(n int) int {
 	for i := 0; i < n; i++ {
 		time.Sleep(time.Second)
 		fmt.Println(i)
 	}
-
+	return 0
 }
 
 func main() {
@@ -24,7 +24,7 @@ func main() {
 
 		go func() {
 			defer wg.Done()
-			counter(i)
+			counter3(i)
 		}()
 	}
 	wg.Wait()
