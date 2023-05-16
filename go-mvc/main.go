@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	ctl "ginRest/go-mvc/controller"
+	_ "ginRest/go-mvc/docs"
 	"ginRest/go-mvc/model"
 	rt "ginRest/go-mvc/router"
 	"log"
@@ -13,12 +14,25 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"golang.org/x/sync/errgroup"
 )
 
 var (
 	g errgroup.Group
 )
+
+// @BasePath /v1
+// swagger API 선언
+func setupSwagger(r *gin.Engine) {
+	r.GET("/", func(c *gin.Context) {
+		c.Redirect(http.StatusFound, "/swagger/index.html")
+	})
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+}
 
 func main() {
 
@@ -30,6 +44,7 @@ func main() {
 	} else if rt, err := rt.NewRouter(controller); err != nil { //router 모듈 설정
 		//~생략
 	} else {
+
 		mapi := &http.Server{
 			Addr:           ":8080",
 			Handler:        rt.Idx(),
@@ -41,6 +56,9 @@ func main() {
 		g.Go(func() error {
 			return mapi.ListenAndServe()
 		})
+
+		// middleware 설정
+		setupSwagger(rt.Idx())
 
 		stopSig := make(chan os.Signal) //chan 선언
 		// 해당 chan 핸들링 선언, SIGINT, SIGTERM에 대한 메세지 notify
@@ -64,4 +82,5 @@ func main() {
 
 	g.Wait()
 	//~생략
+
 }

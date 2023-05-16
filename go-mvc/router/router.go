@@ -26,7 +26,7 @@ func CORS() gin.HandlerFunc {
 }
 
 // 임의 인증을 위한 함수
-func liteAuth() gin.HandlerFunc {
+func LiteAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//~ 생략
 		c.Next()
@@ -37,7 +37,7 @@ func liteAuth() gin.HandlerFunc {
 func (p *Router) Idx() *gin.Engine {
 	//~생략
 	e := gin.New()
-	account := e.Group("acc/v01", liteAuth())
+	account := e.Group("acc/v01", LiteAuth())
 	{
 		fmt.Println(account)
 		account.GET("/ok", p.ct.GetOK) // controller 패키지의 실제 처리 함수
