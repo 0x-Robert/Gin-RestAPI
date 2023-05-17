@@ -46,7 +46,7 @@ func main() {
 	} else {
 
 		mapi := &http.Server{
-			Addr:           ":8080",
+			Addr:           ":8888",
 			Handler:        rt.Idx(),
 			ReadTimeout:    5 * time.Second,
 			WriteTimeout:   10 * time.Second,
